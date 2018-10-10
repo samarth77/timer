@@ -81,7 +81,7 @@ $(document).ready(function () {
             } else {
 
                 changeLock(lockElem.checked);
-                startbtnElem.innerHTML = "<i class='fa fa-pause'></i>"; //input button, value
+                startbtnElem.innerHTML = "<i class='fa fa-pause'></i>Pause"; //input button, value
                 curState = 3;
                 endTime = Date.now() + getAmntTimeInMs();
                 updateDisplayInterval = window.setInterval(updateDisplay, updateMs);
@@ -94,7 +94,7 @@ $(document).ready(function () {
             //pause countdown
             pauseTime = Date.now();
             window.clearInterval(updateDisplayInterval);
-            startbtnElem.innerHTML = '<i class="fa fa-play"></i>';
+            startbtnElem.innerHTML = '<i class="fa fa-play"></i>Play';
             curState = 5;
             pauseTimeNow();
 
@@ -105,7 +105,7 @@ $(document).ready(function () {
             //resume countdown
             endTime += Date.now() - pauseTime;
             updateDisplayInterval = window.setInterval(updateDisplay, updateMs);
-            startbtnElem.innerHTML = '<i class="fa fa-pause"></i>';
+            startbtnElem.innerHTML = '<i class="fa fa-pause"></i>Pause';
             curState = 3;
             resumeTime();
 
@@ -206,7 +206,7 @@ function startTimeWithoutsave() {
             return 0;//end
         } else {
             changeLock(lockElem.checked);
-            startbtnElem.innerHTML = "<i class='fa fa-pause'></i>"; //input button, value
+            startbtnElem.innerHTML = "<i class='fa fa-pause'></i>Pause"; //input button, value
             curState = 3;
             endTime = Date.now() + getAmntTimeInMs();
             updateDisplayInterval = window.setInterval(updateDisplay, updateMs);
@@ -217,7 +217,7 @@ function startTimeWithoutsave() {
         //pause countdown
         pauseTime = Date.now();
         window.clearInterval(updateDisplayInterval);
-        startbtnElem.innerHTML = '<i class="fa fa-play"></i>';
+        startbtnElem.innerHTML = '<i class="fa fa-play"></i>Play';
         curState = 5;
         pauseTimeNow();
 
@@ -228,7 +228,7 @@ function startTimeWithoutsave() {
         //resume countdown
         endTime += Date.now() - pauseTime;
         updateDisplayInterval = window.setInterval(updateDisplay, updateMs);
-        startbtnElem.innerHTML = '<i class="fa fa-pause"></i>';
+        startbtnElem.innerHTML = '<i class="fa fa-pause"></i>Pause';
         curState = 3;
         resumeTime();
 
@@ -290,10 +290,11 @@ function setTimeInDataBase() {
    // });
 
     //var link = Routing.generate('user_set_time');
-    var link = '?action=save_time_counter';
+    var link = 'actions.php?action=save_time_counter';
     $.ajax({
         url: link,
         type: "post",
+		dataType: 'json',
         data: {
             'hours': $("#hours").val(),
             'mints': $("#minutes").val(),
@@ -315,7 +316,7 @@ function setTimeInDataBase() {
                 $("#start").show();
                 $("#user-timer").addClass("after-set").removeClass("edit-mode").removeClass("b4set");
                 curState = curState % 2 ? 1 : 2;
-                startbtnElem.innerHTML = '<i class="fa fa-play"></i>';
+                startbtnElem.innerHTML = '<i class="fa fa-play"></i>Play';
 
                 //TrackIntercomEvent(window.intercomEvents.timer_save_time);
             } else {
@@ -344,6 +345,7 @@ function startTimeNow() {
     $.ajax({
         url: link,
         type: "POST",
+		dataType: 'json',
         data: '',
         success: function (response) {
             if (response.success == 'true') {
@@ -370,6 +372,7 @@ function  pauseTimeNow() {
     $.ajax({
         url: link,
         type: "post",
+		dataType: 'json',
         data: {'hours': $("#hours").val(),
             'mints': $("#minutes").val(),
             'seconds': $("#seconds").val()},
@@ -402,6 +405,7 @@ function stopTimeNow(from) {
     $.ajax({
         url: link,
         type: "get",
+		dataType: 'json',
         data: '',
         success: function (response) {
             if (response.success == 'true') {
@@ -414,7 +418,7 @@ function stopTimeNow(from) {
                 minutesElem.value = response.mint;
                 hoursElem.value = response.hours;
                 changeLock(false);
-                startbtnElem.innerHTML = '<i class="fa fa-play"></i>';
+                startbtnElem.innerHTML = '<i class="fa fa-play"></i>Play';
                
                // TrackIntercomEvent(window.intercomEvents.timer_reset_time);
             }
@@ -446,6 +450,7 @@ function getTimeNow() {
     $.ajax({
         url: link,
         type: "get",
+		dataType: 'json',
         data: '',
         success: function (response) {
             if (response.success == 'true') {
@@ -465,7 +470,7 @@ function getTimeNow() {
                 $("#start").show();
 
 
-                startbtnElem.innerHTML = '<i class="fa fa-play"></i>';
+                startbtnElem.innerHTML = '<i class="fa fa-play"></i>Play';
                 if (response.pause == false) {
                     startTimeWithoutsave();
 
@@ -497,6 +502,7 @@ function setSeentimerNow() {
 	var link = 'actions.php?action=set_seen_time_counter';
     $.ajax({
         url: link,
+		dataType: 'json',
         type: "POST",
         data: '',
         success: function (response) {
@@ -522,6 +528,7 @@ function finishTime() {
 	var link = 'actions.php?action=finish_time_counter';
     $.ajax({
         url: link,
+		dataType: 'json',
         type: "POST",
         data: '',
         success: function (response) {
@@ -561,6 +568,7 @@ function resumeTime() {
 	var link = 'actions.php?action=resume_time_counter';
     $.ajax({
         url: link,
+		dataType: 'json',
         type: "post",
         data: {'hours': $("#hours").val(),
             'mints': $("#minutes").val(),

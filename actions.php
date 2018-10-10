@@ -1,7 +1,7 @@
-<?php 
+<?php header('Content-Type: application/json'); 
 
-if(isset($_POST['action'])){
-	$request = $_REQUEST; 
+if(isset($_REQUEST['action'])){
+	$request = $_REQUEST; 	
 	switch($request['action']) {
 		case 'save_time_counter' :
 			saveTimeCounterAction($request);
@@ -29,18 +29,20 @@ if(isset($_POST['action'])){
 			break;
 		default: break;
 	}
+}
 	/**
      * save time in database 
      * @param $request
-     * @return JsonResponse
+     * @return json_encode
      */
      function saveTimeCounterAction($request) {
-        $hoursFromUSer = $request["hours"];
+		 
+		$hoursFromUSer = $request["hours"];
         $mints = $request["mints"];
         if ($hoursFromUSer < 24 || $mints < 60) {
             $mintsFromUSer = $request["mints"];
             $secondsFromUSer = $request["seconds"];
-            $user = $this->getUser();
+            //$user = $this->getUser();
 
             //$response = array(
             //    'success' => 'false',
@@ -71,9 +73,10 @@ if(isset($_POST['action'])){
                 'message' => 'Time set successfully'
             );
 
-            return new JsonResponse(
+            //header('Content-Type: application/json'); 
+			echo json_encode(
                     $response
-            );
+            );exit;
         }
         if ($hoursFromUSer > 24 && $$mints > 60) {
             $message = "Set Hr less than 24 and Min less than 60";
@@ -88,30 +91,32 @@ if(isset($_POST['action'])){
             'success' => 'false',
             'message' => $message
         );
-        return new JsonResponse(
+        //header('Content-Type: application/json'); 
+		echo json_encode(
                 $response
         );
     }
 
      function startTimeCounterAction($request) {
-        $user = $this->getUser();
+        //$user = $this->getUser();
 
 
         $date = date("Y-m-d H:i:s");
         $dateOFUSer = new \DateTime($date);
 // update the user objects
-        $em = $this->getDoctrine()->getManager();
-        $user->setStartTime($dateOFUSer);
-        $user->setPauseTime(false);
+        //$em = $this->getDoctrine()->getManager();
+        //$user->setStartTime($dateOFUSer);
+        //$user->setPauseTime(false);
 
-        $em->persist($user);
-        $em->flush();
+        //$em->persist($user);
+        //$em->flush();
 
         $response = array(
             'success' => 'true',
                 // 'message' => 'Time set successfully'
         );
-        return new JsonResponse(
+		//header('Content-Type: application/json');
+        echo json_encode(
                 $response
         );
     }
@@ -120,7 +125,7 @@ if(isset($_POST['action'])){
         $hoursFromUSer = $request["hours"];
         $mintsFromUSer = $request["mints"];
         $secondsFromUSer = $request["seconds"];
-        $user = $this->getUser();
+        //$user = $this->getUser();
         $response = array(
             'success' => 'false',
             'message' => ''
@@ -129,40 +134,41 @@ if(isset($_POST['action'])){
         $dateOFUSer = new \DateTime($date . " $hoursFromUSer:$mintsFromUSer:$secondsFromUSer");
 
         // update the user objects
-        $em = $this->getDoctrine()->getManager();
-        $user->setNowTime($dateOFUSer);
-        $user->setPauseTime(true);
-        $em->persist($user);
-        $em->flush();
+        //$em = $this->getDoctrine()->getManager();
+        //$user->setNowTime($dateOFUSer);
+        //$user->setPauseTime(true);
+        //$em->persist($user);
+        //$em->flush();
 
         // Update the message will appear to client
         $response = array(
             'success' => 'true',
                 // 'message' => 'Time set successfully'
         );
-        return new JsonResponse(
+        //header('Content-Type: application/json'); 
+		echo json_encode(
                 $response
-        );
+        );exit;
     }
 
      function stopTimeCounterAction($request) {
-        $user = $this->getUser();
+        //$user = $this->getUser();
         $response = array(
             'success' => 'false',
             'message' => ''
         );
 
 // get the set time of user 
-        $timeFromUSer = $user->getOriginalTime();
+        $timeFromUSer = new \DateTime(date("Y-m-d H:i:s"));
         if ($timeFromUSer) {
 
 
-            $em = $this->getDoctrine()->getManager();
-            $user->setOriginalTime($timeFromUSer);
-            $user->setNowTime($timeFromUSer);
-            $user->setPauseTime(true);
-            $em->persist($user);
-            $em->flush();
+            //$em = $this->getDoctrine()->getManager();
+            //$user->setOriginalTime($timeFromUSer);
+            //$user->setNowTime($timeFromUSer);
+            //$user->setPauseTime(true);
+            //$em->persist($user);
+            //$em->flush();
 
 
             $timeOfUserFormat = $timeFromUSer->format('H:i:s');
@@ -176,18 +182,20 @@ if(isset($_POST['action'])){
                 'hours' => $timeOfUserFormat[0],
             );
         }
-        return new JsonResponse(
+       // header('Content-Type: application/json'); 
+		echo json_encode(
                 $response
         );
     }
 
      function getTimeCounterAction($request) {
 
-        $user = $this->getUser();
-        $startDate = $user->getStartTime();
-        $nowTime = $user->getNowTime();
-        $originalTime = $user->getOriginalTime();
-        $pauseTime = $user->getPauseTime();
+        //$user = $this->getUser();
+		
+        $startDate = new \DateTime(date("Y-m-d H:i:s")); //$user->getStartTime();
+        $nowTime = new \DateTime(date("Y-m-d H:i:s")); //$user->getNowTime();
+        $originalTime = "00:01:00";
+        $pauseTime = true;//$user->getPauseTime();
 
 
 
@@ -224,9 +232,10 @@ if(isset($_POST['action'])){
                     'pause' => $pauseTime
                 );
 
-                return new JsonResponse(
+                //header('Content-Type: application/json'); 
+				echo json_encode(
                         $response
-                );
+                ); exit;
             }
 
             $timeOfUserFormat = explode(":", $nowTime->format('H:i:s'));
@@ -241,7 +250,8 @@ if(isset($_POST['action'])){
             );
         }
 
-        return new JsonResponse(
+        //header('Content-Type: application/json'); 
+		return json_encode(
                 $response
         );
     }
@@ -249,31 +259,32 @@ if(isset($_POST['action'])){
     /**
      * finish time counter
      * @param $request
-     * @return JsonResponse
+     * @return json_encode
      */
      function finishTimeCounterAction($request) {
-        $user = $this->getUser();
-        $timer = $user->getOriginalTime();
+        //$user = $this->getUser();
+        $timer = "00:01:00";
         //$timeOfUserFormat = explode(":", $timer);
-        $em = $this->getDoctrine()->getManager();
-        $user->setStartTime(NULL);
-        $user->setSeenTimer(false);
-        $user->setNowTime(NULL);
-        $user->setOriginalTime(NULL);
-        $user->setPauseTime(NULL);
+        //$em = $this->getDoctrine()->getManager();
+        //$user->setStartTime(NULL);
+        //$user->setSeenTimer(false);
+        //$user->setNowTime(NULL);
+        //$user->setOriginalTime(NULL);
+       // $user->setPauseTime(NULL);
         if ($timer) {
-            $user->setFinishedTime($timer);
+            //$user->setFinishedTime($timer);
         }
-        $em->persist($user);
-        $em->flush();
+        //$em->persist($user);
+        //$em->flush();
 
 
         $response = array(
             'success' => 'true',
-            "message" => "Time Passed! you spent " . $user->getFinishedTime()->format('H:i') . ". " . "<br>" . "Check your progress, or reset and start again!"
+            //"message" => "Time Passed! you spent " . $user->getFinishedTime()->format('H:i') . ". " . "<br>" . "Check your progress, or reset and start again!"
         );
 
-        return new JsonResponse(
+        //header('Content-Type: application/json'); 
+		echo json_encode(
                 $response
         );
     }
@@ -281,13 +292,13 @@ if(isset($_POST['action'])){
     /**
      * resume time counter
      * @param $request
-     * @return JsonResponse
+     * @return json_encode
      */
      function resumeTimeCounterAction($request) {
         $hoursFromUSer = $request["hours"];
         $mintsFromUSer = $request["mints"];
         $secondsFromUSer = $request["seconds"];
-        $user = $this->getUser();
+        //$user = $this->getUser();
         $response = array(
             'success' => 'false',
             'message' => ''
@@ -295,41 +306,43 @@ if(isset($_POST['action'])){
         $date = date("Y-m-d H:i:s");
         $dateOFUSer = new \DateTime($date);
         // update the user objects
-        $em = $this->getDoctrine()->getManager();
-        $user->setStartTime($dateOFUSer);
-        $user->setPauseTime(false);
-        $em->persist($user);
-        $em->flush();
+        //$em = $this->getDoctrine()->getManager();
+        //$user->setStartTime($dateOFUSer);
+        ///$user->setPauseTime(false);
+       // $em->persist($user);
+       // $em->flush();
 
         // Update the message will appear to client
         $response = array(
             'success' => 'true',
                 // 'message' => 'Time set successfully'
         );
-        return new JsonResponse(
+       // header('Content-Type: application/json'); 
+		echo json_encode(
                 $response
         );
     }
 
      function setSeenTimerAction($request) {
-        $user = $this->getUser();
+        //$user = $this->getUser();
         $response = array(
             'success' => 'false',
             'message' => ''
         );
-        $em = $this->getDoctrine()->getManager();
-        $user->setSeenTimer(true);
-        $em->persist($user);
-        $em->flush();
+        //$em = $this->getDoctrine()->getManager();
+        //$user->setSeenTimer(true);
+        //$em->persist($user);
+        //$em->flush();
 
         // Update the message will appear to client
         $response = array(
             'success' => 'true',
                 // 'message' => 'Time set successfully'
         );
-        return new JsonResponse(
+        //header('Content-Type: application/json'); 
+		echo json_encode(
                 $response
         );
     }
-}
+
 ?>
