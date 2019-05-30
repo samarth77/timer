@@ -1,0 +1,119 @@
+/* -----------------------------------------------------
+    User Timer
+----------------------------------------------------- */
+.user-timer {
+  color: #fff;
+  font-size: 18px;
+  margin: 0;
+  height: auto;
+  position: fixed;
+  right: 5px;
+  z-index: 9;
+  background: #444d58;
+  padding: 5px 0;
+}
+.user-timer * {
+  display: inline-block;
+  vertical-align: top;
+}
+.user-timer > span {
+  text-align: center;
+  padding: 0 5px;
+}
+.user-timer > span:nth-of-type(2) {
+  padding: 0 10px;
+  position: relative;
+}
+.user-timer > span:nth-of-type(2):after, .user-timer > span:nth-of-type(2):before {
+  display: inline-block;
+  width: 5px;
+  top: -1px;
+  text-align: center;
+  color: #fff;
+  content: ":";
+  position: absolute;
+}
+.user-timer > span:nth-of-type(2):after {
+  left: -3px;
+}
+.user-timer > span:nth-of-type(2):before {
+  right: -3px;
+}
+.user-timer label {
+  display: block;
+  font-size: 11px;
+  line-height: 14px;
+  font-weight: normal;
+  margin-bottom: 0px;
+}
+.user-timer button {
+  height: 24px;
+  line-height: 24px;
+  width: 24px;
+  margin-top: 8px;
+  border-radius: 4px !important;
+  padding: 0 5px;
+  font-size: 16px;
+  text-align: center;
+  border: none;
+  padding: 0px;
+  vertical-align: middle;
+  background: none;
+  /*&:last-of-type {
+      color: $gray;
+      &:hover {
+          color: #fff;
+      }
+  }*/
+}
+.user-timer button i {
+  vertical-align: baseline;
+}
+.user-timer #edit-timer {
+  width: auto;
+  background: #3b434d;
+  font-size: 12px;
+  font-weight: 600;
+  padding: 0 7px;
+  border: 1px solid #4f5966;
+}
+.user-timer #reset i {
+  transform: rotate(45deg);
+}
+.user-timer #save-timer {
+  background: #3b434d;
+}
+.user-timer input {
+  -webkit-appearance: textfield;
+  appearance: textfield;
+  -moz-appearance: textfield;
+  height: 26px;
+  border: none;
+  text-align: center;
+  padding: 0px;
+  font-size: 18px;
+  color: #fff;
+  background: none;
+  width: 36px;
+}
+.user-timer input[type=number]::-webkit-inner-spin-button,
+.user-timer input[type=number]::-webkit-outer-spin-button {
+  -webkit-appearance: none;
+  margin: 0;
+}
+.user-timer.b4set #start, .user-timer.b4set #reset {
+  display: none;
+}
+.user-timer.edit-mode input:not(#seconds) {
+  border: 1px solid rgba(255, 255, 255, 0.2);
+  color: #32c5d2;
+}
+.user-timer.edit-mode > span:nth-of-type(3) {
+  display: none;
+}
+.user-timer.edit-mode > span:nth-of-type(2):before {
+  display: none;
+}
+.user-timer.after-set #start, .user-timer.after-set #reset {
+  display: inline-block;
+}
