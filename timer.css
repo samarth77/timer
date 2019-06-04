@@ -1,4 +1,49 @@
 /* -----------------------------------------------------
+    Time Alert Modal
+----------------------------------------------------- */
+#time-alert {
+  background: url(trans-bg.jpg) center center/cover no-repeat;
+}
+#time-alert .modal-dialog {
+  margin: 110px auto;
+}
+#time-alert h2 {
+  font-weight: 600;
+  color: #f44336;
+  display: block;
+  font-size: 24px;
+  text-align: center;
+  position: relative;
+}
+#time-alert h2 span {
+  display: block;
+  margin-top: -110px;
+  margin-bottom: 15px;
+}
+#time-alert .close {
+  position: absolute;
+  top: 10px;
+  right: 10px;
+}
+#time-alert p {
+  margin: 15px auto;
+  text-align: center;
+  font-size: 18px;
+  color: #3598dc;
+}
+@media (max-width: 767px) {
+  #time-alert .title-icon {
+    margin-top: -85px;
+  }
+  #time-alert .title-icon img {
+    max-width: 100px;
+  }
+  #time-alert p {
+    font-size: 16px;
+  }
+}
+
+/* -----------------------------------------------------
     User Timer
 ----------------------------------------------------- */
 .user-timer {
